@@ -1,0 +1,39 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+<h:head>
+	<title>HOME</title>
+	<h:outputStylesheet library="css" name="estilos.css"/>
+</h:head>
+<h:body id="principal">
+
+
+	<div align="center">
+		<h:panelGrid header="Sistema de Administracion de Campeonatos"
+			columns="2">
+			<h:form id="form1">
+				<p:panel header="Sistema Administrador">
+					<p:commandButton value="Ingresar" icon="ui-icon-disk"
+						action="/faces/view/gestionCampeonato">
+					</p:commandButton>
+				</p:panel>
+
+			</h:form>
+
+			<h:form id="form2">
+				<p:panel header="Pagina de Presentacion">
+					<p:commandButton value="Ingresar" icon="ui-icon-disk"
+						action="/faces/view/gestionCampeonato">
+					</p:commandButton>
+				</p:panel>
+			</h:form>
+
+		</h:panelGrid>
+	</div>
+</h:body>
+</html>

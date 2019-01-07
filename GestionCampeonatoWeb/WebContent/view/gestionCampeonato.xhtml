@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+"http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:composite="http://java.sun.com/jsf/composite"
+	xmlns:ui="http://java.sun.com/jsf/facelets"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.org/ui">
+
+<h:head>
+	<title>Campeonatos</title>
+</h:head>
+<body>
+	<p:messages autoUpdate="true"></p:messages>
+	<h:panelGrid columns="2">
+		<h:form id="form1">
+			<p:panel header="MANEJO DE CAMPEONATOS">
+				<p:panelGrid columns="2">
+					<h:outputText value="NOMBRE:" />
+					<p:inputText value="#{controllerCampeonato.nombre}" required="true"
+						requiredMessage="Especifique nombre" />
+					<h:outputText value="DESCRIPCION:" />
+					<p:inputText value="#{controllerCampeonato.descripcion}"
+						required="true" requiredMessage="Especifique Descripcion" />
+					<h:outputText value="FECHA:" />
+					<p:calendar value="#{controllerCampeonato.fecha}" required="true"
+						requiredMessage="Especifique Fecha" />
+					<h:outputText value="EQUIPOS PERMITIDOS:" />
+					<p:inputNumber value="#{controllerCampeonato.equiposPermitidos}"
+						required="true" requiredMessage="Especifique Cantidad de Equipos" />
+					<p:commandButton value="Agregar" icon="ui-icon-disk"
+						update="@form,:form2:tabla1"
+						actionListener="#{controllerCampeonato.actionListenerAgregar()}">
+					</p:commandButton>
+				</p:panelGrid>
+			</p:panel>
+		</h:form>
+		<br />
+		<h:form id="form2">
+			<p:panel header="LISTA DE CAMPEONATOS">
+				<p:dataTable value="#{controllerCampeonato.lista}" var="a"
+					id="tabla1">
+					<p:column headerText="ID">
+						<h:outputText value="#{a.campId}" />
+					</p:column>
+					<p:column headerText="NOMBRE">
+						<h:outputText value="#{a.campNombre}" />
+					</p:column>
+					<p:column headerText="DESCRIPCION">
+						<h:outputText value="#{a.campDescripcion}" />
+					</p:column>
+					<p:column headerText="FECHA INICIO">
+						<h:outputText value="#{a.camp_fechaInicio}" />
+					</p:column>
+					<p:column headerText="EQUIPOS PERMITIDOS">
+						<h:outputText value="#{a.camp_cantidadEquiposPermitidos}" />
+					</p:column>
+					<p:column headerText="EQUIPOS REGISTRADOS">
+						<h:outputText value="#{a.camp_cantidadEquiposRegistrados}" />
+					</p:column>
+					<p:column headerText="ELIMINAR">
+						<p:commandButton icon="ui-icon-close" update="@form"
+							actionListener="#{controllerCampeonato.actionListenerEliminar(a.campId)}"></p:commandButton>
+					</p:column>
+					<p:column headerText="EDITAR">
+						<p:commandButton icon="ui-icon-pencil" update="form4"
+							onclick="PF('dialogo1').show();"
+							actionListener="#{controllerCampeonato.actionListenerCargar(a)}"></p:commandButton>
+					</p:column>
+				</p:dataTable>
+				<p:commandButton value="RESET" icon="ui-icon-refresh"
+					update="tabla1"
+					actionListener="#{controllerCampeonato.actionListenerReset()}"></p:commandButton>
+			</p:panel>
+		</h:form>
+	</h:panelGrid>
+	<p:dialog header="Edición de Campeonato" widgetVar="dialogo1"
+		id="dialogo1" modal="true" height="200">
+		<h:form id="form4">
+			<p:messages autoUpdate="true"></p:messages>
+			<p:panelGrid columns="2">
+				<h:outputText value="NOMBRE" />
+				<h:outputText value="#{controllerCampeonato.nombre}" />
+				<h:outputText value="DESCRIPCION:" />
+				<p:inputText value="#{controllerCampeonato.descripcion}"
+					required="true" />
+				<h:outputText value="FECHA:" />
+				<p:calendar value="#{controllerCampeonato.fecha}" required="true" />
+				<h:outputText value="EQUIPOS PERMITIDOS:" />
+				<p:inputNumber value="#{controllerCampeonato.equiposPermitidos}"
+					required="true" requiredMessage="Especifique Cantidad de Equipos" />
+				<p:commandButton value="Actualizar" update="@form,:form2:tabla1"
+					actionListener="#{controllerCampeonato.actionListenerActualizar()}"></p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+</body>
+</html>
