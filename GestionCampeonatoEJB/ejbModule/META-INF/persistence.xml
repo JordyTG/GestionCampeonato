@@ -3,5 +3,15 @@
 	<persistence-unit name="gestionCampeonatoDS">
 		<jta-data-source>java:/gestionCampeonatoDS</jta-data-source>
 		<class>campeonato.model.entities.tbl_Campeonato</class>
+		<class>campeonato.model.entities.tbl_Equipos</class>
+		<class>campeonato.model.entities.tbl_Fases</class>
+		<class>campeonato.model.entities.tbl_Grupos</class>
+		<class>campeonato.model.entities.tbl_Jugadores</class>
+		<class>campeonato.model.entities.tbl_Partidos</class>
+		<class>campeonato.model.entities.tbl_Persona</class>
+		<class>campeonato.model.entities.tbl_ResultadosGrupos</class>
+		<class>campeonato.model.entities.tbl_Roles</class>
+		<class>campeonato.model.entities.tbl_TipoPersona</class>
+		<class>campeonato.model.entities.tbl_Usuario</class>
 	</persistence-unit>
 </persistence>

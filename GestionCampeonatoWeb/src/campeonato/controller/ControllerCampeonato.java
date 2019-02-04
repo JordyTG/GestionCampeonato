@@ -7,7 +7,7 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import campeonato.model.entities.tbl_Campeonato;
+import campeonato.model.entities.*;
 import campeonato.model.manager.CampeonatoManager;
 import campeonato.view.util.JSFUtil;
 
@@ -20,7 +20,7 @@ public class ControllerCampeonato {
 	private String descripcion;
 	private int equiposPermitidos;
 	private int equiposRegistrados;
-
+	private int idCampeonatoSeleccionado;
 	private List<tbl_Campeonato> lista;
 	@EJB
 	private CampeonatoManager managerCampeonato;
@@ -32,6 +32,13 @@ public class ControllerCampeonato {
 		equiposPermitidos = 32;
 	}
 
+	public String actionEntrarCampeonato(int campId)
+	{
+		idCampeonatoSeleccionado=campId;
+		System.out.println("Correcta captura de ID");
+		return "gestionEquiposCampeonato";		
+	}
+	
 	public void actionListenerReset() {
 		lista = managerCampeonato.findAllCampeonatos();
 	}
@@ -146,6 +153,14 @@ public class ControllerCampeonato {
 
 	public void setEquiposRegistrados(int equiposRegistrados) {
 		this.equiposRegistrados = equiposRegistrados;
+	}
+
+	public int getIdCampeonatoSeleccionado() {
+		return idCampeonatoSeleccionado;
+	}
+
+	public void setIdCampeonatoSeleccionado(int idCampeonatoSeleccionado) {
+		this.idCampeonatoSeleccionado = idCampeonatoSeleccionado;
 	}
 
 }

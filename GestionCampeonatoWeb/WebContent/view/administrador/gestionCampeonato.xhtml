@@ -58,6 +58,10 @@
 					<p:column headerText="EQUIPOS REGISTRADOS">
 						<h:outputText value="#{a.camp_cantidadEquiposRegistrados}" />
 					</p:column>
+					<p:column headerText="ENTRAR">
+						<p:commandButton icon="ui-icon-open"
+							action="#{controllerEquiposCampeonato.actionEntrarCampeonato(a.campId, a.campNombre)}"></p:commandButton>
+					</p:column>
 					<p:column headerText="ELIMINAR">
 						<p:commandButton icon="ui-icon-close" update="@form"
 							actionListener="#{controllerCampeonato.actionListenerEliminar(a.campId)}"></p:commandButton>
