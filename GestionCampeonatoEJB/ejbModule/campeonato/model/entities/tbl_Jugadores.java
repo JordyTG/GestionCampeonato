@@ -19,11 +19,20 @@ public class tbl_Jugadores implements Serializable {
 	@Column(name="jug_id")
 	private Integer jugId;
 
+	@Column(name="jug_apellidos")
+	private String jugApellidos;
+
+	@Column(name="jug_cedula")
+	private String jugCedula;
+
 	@Column(name="jug_foto")
 	private byte[] jugFoto;
 
 	@Column(name="jug_nacionalidad")
 	private String jugNacionalidad;
+
+	@Column(name="jug_nombres")
+	private Integer jugNombres;
 
 	@Column(name="jug_numero")
 	private String jugNumero;
@@ -51,11 +60,6 @@ public class tbl_Jugadores implements Serializable {
 	@JoinColumn(name="equ_id")
 	private tbl_Equipos tblEquipo;
 
-	//bi-directional many-to-one association to tbl_Persona
-	@ManyToOne
-	@JoinColumn(name="per_id")
-	private tbl_Persona tblPersona;
-
 	public tbl_Jugadores() {
 	}
 
@@ -65,6 +69,22 @@ public class tbl_Jugadores implements Serializable {
 
 	public void setJugId(Integer jugId) {
 		this.jugId = jugId;
+	}
+
+	public String getJugApellidos() {
+		return this.jugApellidos;
+	}
+
+	public void setJugApellidos(String jugApellidos) {
+		this.jugApellidos = jugApellidos;
+	}
+
+	public String getJugCedula() {
+		return this.jugCedula;
+	}
+
+	public void setJugCedula(String jugCedula) {
+		this.jugCedula = jugCedula;
 	}
 
 	public byte[] getJugFoto() {
@@ -81,6 +101,14 @@ public class tbl_Jugadores implements Serializable {
 
 	public void setJugNacionalidad(String jugNacionalidad) {
 		this.jugNacionalidad = jugNacionalidad;
+	}
+
+	public Integer getJugNombres() {
+		return this.jugNombres;
+	}
+
+	public void setJugNombres(Integer jugNombres) {
+		this.jugNombres = jugNombres;
 	}
 
 	public String getJugNumero() {
@@ -145,14 +173,6 @@ public class tbl_Jugadores implements Serializable {
 
 	public void setTblEquipo(tbl_Equipos tblEquipo) {
 		this.tblEquipo = tblEquipo;
-	}
-
-	public tbl_Persona getTblPersona() {
-		return this.tblPersona;
-	}
-
-	public void setTblPersona(tbl_Persona tblPersona) {
-		this.tblPersona = tblPersona;
 	}
 
 }

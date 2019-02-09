@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <persistence version="2.1" xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd">
-	<persistence-unit name="gestionCampeonatoDS">
+	<persistence-unit name="gestionCampeonatoDS" transaction-type="JTA">
 		<jta-data-source>java:/gestionCampeonatoDS</jta-data-source>
 		<class>campeonato.model.entities.tbl_Campeonato</class>
 		<class>campeonato.model.entities.tbl_Equipos</class>
 		<class>campeonato.model.entities.tbl_Fases</class>
-		<class>campeonato.model.entities.tbl_Grupos</class>
 		<class>campeonato.model.entities.tbl_Jugadores</class>
 		<class>campeonato.model.entities.tbl_Partidos</class>
-		<class>campeonato.model.entities.tbl_Persona</class>
 		<class>campeonato.model.entities.tbl_ResultadosGrupos</class>
 		<class>campeonato.model.entities.tbl_Roles</class>
-		<class>campeonato.model.entities.tbl_TipoPersona</class>
 		<class>campeonato.model.entities.tbl_Usuario</class>
+		<class>campeonato.model.entities.tlb_Grupos</class>
 	</persistence-unit>
 </persistence>

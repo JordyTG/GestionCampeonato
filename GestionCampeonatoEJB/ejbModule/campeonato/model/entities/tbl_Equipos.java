@@ -37,6 +37,9 @@ public class tbl_Equipos implements Serializable {
 	@Column(name="\"equ_nombreOficial\"")
 	private String equ_nombreOficial;
 
+	@Column(name="\"equ_nombrePresidente\"")
+	private String equ_nombrePresidente;
+
 	@Column(name="\"equ_paginaWeb\"")
 	private String equ_paginaWeb;
 
@@ -47,15 +50,6 @@ public class tbl_Equipos implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="camp_id")
 	private tbl_Campeonato tblCampeonato;
-
-	//bi-directional many-to-one association to tbl_Persona
-	@ManyToOne
-	@JoinColumn(name="equ_presidente_id")
-	private tbl_Persona tblPersona;
-
-	//bi-directional many-to-one association to tbl_Grupos
-	@OneToMany(mappedBy="tblEquipo")
-	private List<tbl_Grupos> tblGrupos;
 
 	//bi-directional many-to-one association to tbl_Jugadores
 	@OneToMany(mappedBy="tblEquipo")
@@ -72,6 +66,10 @@ public class tbl_Equipos implements Serializable {
 	//bi-directional many-to-one association to tbl_ResultadosGrupos
 	@OneToMany(mappedBy="tblEquipo")
 	private List<tbl_ResultadosGrupos> tblResultadosGrupos;
+
+	//bi-directional many-to-one association to tlb_Grupos
+	@OneToMany(mappedBy="tblEquipo")
+	private List<tlb_Grupos> tlbGrupos;
 
 	public tbl_Equipos() {
 	}
@@ -124,6 +122,14 @@ public class tbl_Equipos implements Serializable {
 		this.equ_nombreOficial = equ_nombreOficial;
 	}
 
+	public String getEqu_nombrePresidente() {
+		return this.equ_nombrePresidente;
+	}
+
+	public void setEqu_nombrePresidente(String equ_nombrePresidente) {
+		this.equ_nombrePresidente = equ_nombrePresidente;
+	}
+
 	public String getEqu_paginaWeb() {
 		return this.equ_paginaWeb;
 	}
@@ -146,36 +152,6 @@ public class tbl_Equipos implements Serializable {
 
 	public void setTblCampeonato(tbl_Campeonato tblCampeonato) {
 		this.tblCampeonato = tblCampeonato;
-	}
-
-	public tbl_Persona getTblPersona() {
-		return this.tblPersona;
-	}
-
-	public void setTblPersona(tbl_Persona tblPersona) {
-		this.tblPersona = tblPersona;
-	}
-
-	public List<tbl_Grupos> getTblGrupos() {
-		return this.tblGrupos;
-	}
-
-	public void setTblGrupos(List<tbl_Grupos> tblGrupos) {
-		this.tblGrupos = tblGrupos;
-	}
-
-	public tbl_Grupos addTblGrupo(tbl_Grupos tblGrupo) {
-		getTblGrupos().add(tblGrupo);
-		tblGrupo.setTblEquipo(this);
-
-		return tblGrupo;
-	}
-
-	public tbl_Grupos removeTblGrupo(tbl_Grupos tblGrupo) {
-		getTblGrupos().remove(tblGrupo);
-		tblGrupo.setTblEquipo(null);
-
-		return tblGrupo;
 	}
 
 	public List<tbl_Jugadores> getTblJugadores() {
@@ -264,6 +240,28 @@ public class tbl_Equipos implements Serializable {
 		tblResultadosGrupo.setTblEquipo(null);
 
 		return tblResultadosGrupo;
+	}
+
+	public List<tlb_Grupos> getTlbGrupos() {
+		return this.tlbGrupos;
+	}
+
+	public void setTlbGrupos(List<tlb_Grupos> tlbGrupos) {
+		this.tlbGrupos = tlbGrupos;
+	}
+
+	public tlb_Grupos addTlbGrupo(tlb_Grupos tlbGrupo) {
+		getTlbGrupos().add(tlbGrupo);
+		tlbGrupo.setTblEquipo(this);
+
+		return tlbGrupo;
+	}
+
+	public tlb_Grupos removeTlbGrupo(tlb_Grupos tlbGrupo) {
+		getTlbGrupos().remove(tlbGrupo);
+		tlbGrupo.setTblEquipo(null);
+
+		return tlbGrupo;
 	}
 
 }

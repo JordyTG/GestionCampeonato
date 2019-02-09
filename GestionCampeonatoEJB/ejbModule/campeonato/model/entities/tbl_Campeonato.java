@@ -45,10 +45,6 @@ public class tbl_Campeonato implements Serializable {
 	@OneToMany(mappedBy="tblCampeonato")
 	private List<tbl_Fases> tblFases;
 
-	//bi-directional many-to-one association to tbl_Grupos
-	@OneToMany(mappedBy="tblCampeonato")
-	private List<tbl_Grupos> tblGrupos;
-
 	//bi-directional many-to-one association to tbl_Partidos
 	@OneToMany(mappedBy="tblCampeonato")
 	private List<tbl_Partidos> tblPartidos;
@@ -56,6 +52,10 @@ public class tbl_Campeonato implements Serializable {
 	//bi-directional many-to-one association to tbl_ResultadosGrupos
 	@OneToMany(mappedBy="tblCampeonato")
 	private List<tbl_ResultadosGrupos> tblResultadosGrupos;
+
+	//bi-directional many-to-one association to tlb_Grupos
+	@OneToMany(mappedBy="tblCampeonato")
+	private List<tlb_Grupos> tlbGrupos;
 
 	public tbl_Campeonato() {
 	}
@@ -152,28 +152,6 @@ public class tbl_Campeonato implements Serializable {
 		return tblFas;
 	}
 
-	public List<tbl_Grupos> getTblGrupos() {
-		return this.tblGrupos;
-	}
-
-	public void setTblGrupos(List<tbl_Grupos> tblGrupos) {
-		this.tblGrupos = tblGrupos;
-	}
-
-	public tbl_Grupos addTblGrupo(tbl_Grupos tblGrupo) {
-		getTblGrupos().add(tblGrupo);
-		tblGrupo.setTblCampeonato(this);
-
-		return tblGrupo;
-	}
-
-	public tbl_Grupos removeTblGrupo(tbl_Grupos tblGrupo) {
-		getTblGrupos().remove(tblGrupo);
-		tblGrupo.setTblCampeonato(null);
-
-		return tblGrupo;
-	}
-
 	public List<tbl_Partidos> getTblPartidos() {
 		return this.tblPartidos;
 	}
@@ -216,6 +194,28 @@ public class tbl_Campeonato implements Serializable {
 		tblResultadosGrupo.setTblCampeonato(null);
 
 		return tblResultadosGrupo;
+	}
+
+	public List<tlb_Grupos> getTlbGrupos() {
+		return this.tlbGrupos;
+	}
+
+	public void setTlbGrupos(List<tlb_Grupos> tlbGrupos) {
+		this.tlbGrupos = tlbGrupos;
+	}
+
+	public tlb_Grupos addTlbGrupo(tlb_Grupos tlbGrupo) {
+		getTlbGrupos().add(tlbGrupo);
+		tlbGrupo.setTblCampeonato(this);
+
+		return tlbGrupo;
+	}
+
+	public tlb_Grupos removeTlbGrupo(tlb_Grupos tlbGrupo) {
+		getTlbGrupos().remove(tlbGrupo);
+		tlbGrupo.setTblCampeonato(null);
+
+		return tlbGrupo;
 	}
 
 }

@@ -20,6 +20,12 @@ public class tbl_Partidos implements Serializable {
 	@Column(name="par_id")
 	private Integer parId;
 
+	@Column(name="\"equ_id_L\"")
+	private Integer equ_id_L;
+
+	@Column(name="\"equ_id_V\"")
+	private Integer equ_id_V;
+
 	@Column(name="par_arbitro")
 	private String parArbitro;
 
@@ -52,12 +58,14 @@ public class tbl_Partidos implements Serializable {
 
 	//bi-directional many-to-one association to tbl_Equipos
 	@ManyToOne
-	@JoinColumn(name="\"equ_id_L\"")
+	@JoinColumns({
+		})
 	private tbl_Equipos tblEquipo1;
 
 	//bi-directional many-to-one association to tbl_Equipos
 	@ManyToOne
-	@JoinColumn(name="\"equ_id_V\"")
+	@JoinColumns({
+		})
 	private tbl_Equipos tblEquipo2;
 
 	public tbl_Partidos() {
@@ -69,6 +77,22 @@ public class tbl_Partidos implements Serializable {
 
 	public void setParId(Integer parId) {
 		this.parId = parId;
+	}
+
+	public Integer getEqu_id_L() {
+		return this.equ_id_L;
+	}
+
+	public void setEqu_id_L(Integer equ_id_L) {
+		this.equ_id_L = equ_id_L;
+	}
+
+	public Integer getEqu_id_V() {
+		return this.equ_id_V;
+	}
+
+	public void setEqu_id_V(Integer equ_id_V) {
+		this.equ_id_V = equ_id_V;
 	}
 
 	public String getParArbitro() {

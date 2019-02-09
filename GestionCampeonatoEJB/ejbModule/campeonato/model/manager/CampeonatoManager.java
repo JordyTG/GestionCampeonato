@@ -85,15 +85,19 @@ public class CampeonatoManager {
 		System.out.println("\nvoid agregarEQUIPO\n");
 		if (equipo.getEqu_nombreOficial() == null || equipo.getEqu_nombreOficial().length() == 0)
 			throw new Exception("Debe especificar campos.");
-		tbl_Persona persona =(tbl_Persona)em.find(tbl_Persona.class, idPresidentePersona);
 		tbl_Campeonato campeonato=(tbl_Campeonato)em.find(tbl_Campeonato.class, idCampeonato);
 		equipo.setTblCampeonato(campeonato);
-		equipo.setTblPersona(persona);
 		em.persist(equipo);
 	}
 
 	public tbl_Equipos findEquipo(int id) throws Exception {
 		tbl_Equipos a = em.find(tbl_Equipos.class, id);
+		return a;
+	}
+	
+	public tbl_Equipos findEquipoYJugadores(int id) throws Exception {
+		tbl_Equipos a = em.find(tbl_Equipos.class, id);
+		a.getTblJugadores().size();
 		return a;
 	}
 
@@ -125,17 +129,67 @@ public class CampeonatoManager {
 	}
 	
 
-	//---------------------------TipoPersona
+	//---------------------------Jugador
 	
-	public List<tbl_TipoPersona> findAllTipoPesona() {
+	public List<tbl_Jugadores> findAllJugadores() {
 		Query q;
-		List<tbl_TipoPersona> listado;
+		List<tbl_Jugadores> listado;
 		String sentenciaSQL;
-		sentenciaSQL = "SELECT o FROM tbl_TipoPersona o";
+		sentenciaSQL = "SELECT o FROM tbl_TipoPersona o ";
 		q = em.createQuery(sentenciaSQL);
 		listado = q.getResultList();
 		return listado;
 	}
+	
+	public List<tbl_Jugadores> findAllJugadoresEquipo(int idEquipo) {
+		Query q;
+		List<tbl_Jugadores> listado;
+		String sentenciaSQL;
+		sentenciaSQL = "SELECT o FROM tbl_Jugadores o WHERE o.camp_id = "+ idEquipo;
+		q = em.createQuery(sentenciaSQL);
+		listado = q.getResultList();
+		return listado;
+	}	
+	
+	
+	public void agregarJugador(tbl_Jugadores jugador, int idEquipo) throws Exception {
+		System.out.println("\nvoid agregarNuevo\n");
+		if (jugador.getJugCedula()== null || jugador.getJugCedula().length() == 0)
+			throw new Exception("Debe especificar campos.");
+		tbl_Equipos b = em.find(tbl_Equipos.class, idEquipo);
+		jugador.setTblEquipo(b);
+		if (jugador.getJugCedula().length()!=10)
+			throw new Exception("La cedula necesita 1o digitos.");
+		em.persist(jugador);
+	}
+
+	public tbl_Jugadores findPersona(int id) throws Exception {
+		tbl_Jugadores a = em.find(tbl_Jugadores .class, id);
+		return a;
+	}
+
+	public void eliminarPersona(int id) throws Exception { // 
+		tbl_Jugadores a = findPersona(id);
+		if (a == null)
+			throw new Exception("No existe la persona especificado."); // lo eliminamos:
+		em.remove(a);
+	}
+
+	
+	
+	public void editarJugador_EquipoDelJugador(int idJugador, int idEquipo) throws Exception {
+		
+		tbl_Jugadores a = em.find(tbl_Jugadores.class, idJugador);
+		if (a==null)
+			throw new Exception("No se existe. Jugador ");
+		tbl_Equipos b = em.find(tbl_Equipos.class, idEquipo);
+		if (b==null)
+			throw new Exception("No se existe. Equipo ");
+		a.setTblEquipo(b);
+		em.merge(a);
+	}
+
+	
 	
 	//--------------------------- ROLES
 	
@@ -201,55 +255,6 @@ public class CampeonatoManager {
 	
 	//-------------------Persona
 	
-	public void agregarPersona(tbl_Persona persona, int idTipoPersona) throws Exception {
-		System.out.println("\nvoid agregarPersona\n");
-		if (persona.getPerCedula() == null || persona.getPerCedula().length() == 0)
-			throw new Exception("Debe especificar campos.");
-		tbl_TipoPersona b = em.find(tbl_TipoPersona.class, idTipoPersona);
-		persona.setTblTipoPersona(b);
-		if (persona.getPerCedula().length()!=10)
-			throw new Exception("La cedula necesita 1o digitos.");
-		em.persist(persona);
-	}
-
-	public tbl_Persona findPersona(int id) throws Exception {
-		tbl_Persona a = em.find(tbl_Persona.class, id);
-		return a;
-	}
-
-	public void eliminarPersona(int id) throws Exception { // 
-		tbl_Persona a = findPersona(id);
-		if (a == null)
-			throw new Exception("No existe la persona especificado."); // lo eliminamos:
-		em.remove(a);
-	}
-
-	public void editarPersona (tbl_Persona persona, int idTipoPersona) throws Exception {
-		tbl_Persona a = em.find(tbl_Persona.class, persona.getPerId());
-		a.setPerNombres(persona.getPerNombres());
-		a.setPerApellidos(persona.getPerApellidos());
-		a.setPerTelefono(persona.getPerTelefono());
-		a.setPerEmail(persona.getPerEmail());
-		a.setPerDireccion(persona.getPerDireccion());
-		tbl_TipoPersona b = em.find(tbl_TipoPersona.class, idTipoPersona);
-		a.setTblTipoPersona(b);
-		if (persona.getPerNombres().length() == 0)
-			throw new Exception("Ponga al menos el Nombre");
-		em.merge(a);
-	}
-
-	
-	
-	public List<tbl_Persona> findAllPersona(int id)
-	{
-		Query q;
-		List<tbl_Persona> listado;
-		String sentenciaSQL;
-		sentenciaSQL = "SELECT o FROM tbl_Persona o";
-		q = em.createQuery(sentenciaSQL);
-		listado = q.getResultList();
-		return listado;
-	}
 	
 	
 	

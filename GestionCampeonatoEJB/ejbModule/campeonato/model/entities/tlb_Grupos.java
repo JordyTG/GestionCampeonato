@@ -5,13 +5,13 @@ import javax.persistence.*;
 
 
 /**
- * The persistent class for the "tbl_Grupos" database table.
+ * The persistent class for the "tlb_Grupos" database table.
  * 
  */
 @Entity
-@Table(name="\"tbl_Grupos\"")
-@NamedQuery(name="tbl_Grupos.findAll", query="SELECT t FROM tbl_Grupos t")
-public class tbl_Grupos implements Serializable {
+@Table(name="\"tlb_Grupos\"")
+@NamedQuery(name="tlb_Grupos.findAll", query="SELECT t FROM tlb_Grupos t")
+public class tlb_Grupos implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -35,7 +35,7 @@ public class tbl_Grupos implements Serializable {
 	@JoinColumn(name="equ_id")
 	private tbl_Equipos tblEquipo;
 
-	public tbl_Grupos() {
+	public tlb_Grupos() {
 	}
 
 	public Integer getGrupId() {
