@@ -55,14 +55,6 @@ public class tbl_Equipos implements Serializable {
 	@OneToMany(mappedBy="tblEquipo")
 	private List<tbl_Jugadores> tblJugadores;
 
-	//bi-directional many-to-one association to tbl_Partidos
-	@OneToMany(mappedBy="tblEquipo1")
-	private List<tbl_Partidos> tblPartidos1;
-
-	//bi-directional many-to-one association to tbl_Partidos
-	@OneToMany(mappedBy="tblEquipo2")
-	private List<tbl_Partidos> tblPartidos2;
-
 	//bi-directional many-to-one association to tbl_ResultadosGrupos
 	@OneToMany(mappedBy="tblEquipo")
 	private List<tbl_ResultadosGrupos> tblResultadosGrupos;
@@ -174,50 +166,6 @@ public class tbl_Equipos implements Serializable {
 		tblJugadore.setTblEquipo(null);
 
 		return tblJugadore;
-	}
-
-	public List<tbl_Partidos> getTblPartidos1() {
-		return this.tblPartidos1;
-	}
-
-	public void setTblPartidos1(List<tbl_Partidos> tblPartidos1) {
-		this.tblPartidos1 = tblPartidos1;
-	}
-
-	public tbl_Partidos addTblPartidos1(tbl_Partidos tblPartidos1) {
-		getTblPartidos1().add(tblPartidos1);
-		tblPartidos1.setTblEquipo1(this);
-
-		return tblPartidos1;
-	}
-
-	public tbl_Partidos removeTblPartidos1(tbl_Partidos tblPartidos1) {
-		getTblPartidos1().remove(tblPartidos1);
-		tblPartidos1.setTblEquipo1(null);
-
-		return tblPartidos1;
-	}
-
-	public List<tbl_Partidos> getTblPartidos2() {
-		return this.tblPartidos2;
-	}
-
-	public void setTblPartidos2(List<tbl_Partidos> tblPartidos2) {
-		this.tblPartidos2 = tblPartidos2;
-	}
-
-	public tbl_Partidos addTblPartidos2(tbl_Partidos tblPartidos2) {
-		getTblPartidos2().add(tblPartidos2);
-		tblPartidos2.setTblEquipo2(this);
-
-		return tblPartidos2;
-	}
-
-	public tbl_Partidos removeTblPartidos2(tbl_Partidos tblPartidos2) {
-		getTblPartidos2().remove(tblPartidos2);
-		tblPartidos2.setTblEquipo2(null);
-
-		return tblPartidos2;
 	}
 
 	public List<tbl_ResultadosGrupos> getTblResultadosGrupos() {

@@ -56,18 +56,6 @@ public class tbl_Partidos implements Serializable {
 	@JoinColumn(name="camp_id")
 	private tbl_Campeonato tblCampeonato;
 
-	//bi-directional many-to-one association to tbl_Equipos
-	@ManyToOne
-	@JoinColumns({
-		})
-	private tbl_Equipos tblEquipo1;
-
-	//bi-directional many-to-one association to tbl_Equipos
-	@ManyToOne
-	@JoinColumns({
-		})
-	private tbl_Equipos tblEquipo2;
-
 	public tbl_Partidos() {
 	}
 
@@ -165,22 +153,6 @@ public class tbl_Partidos implements Serializable {
 
 	public void setTblCampeonato(tbl_Campeonato tblCampeonato) {
 		this.tblCampeonato = tblCampeonato;
-	}
-
-	public tbl_Equipos getTblEquipo1() {
-		return this.tblEquipo1;
-	}
-
-	public void setTblEquipo1(tbl_Equipos tblEquipo1) {
-		this.tblEquipo1 = tblEquipo1;
-	}
-
-	public tbl_Equipos getTblEquipo2() {
-		return this.tblEquipo2;
-	}
-
-	public void setTblEquipo2(tbl_Equipos tblEquipo2) {
-		this.tblEquipo2 = tblEquipo2;
 	}
 
 }

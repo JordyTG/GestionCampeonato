@@ -12,91 +12,153 @@
 </h:head>
 <body>
 	<p:messages autoUpdate="true"></p:messages>
+	<div id="menu">
+		<h:form>
+			<p:menubar>
+				<p:menuitem value="Inicio" title="Inicio" icon="ui-icon-home"
+					action="index"></p:menuitem>
+				<f:facet name="options">
+					<p:commandButton title="Datos de usuario" icon="ui-icon-person" />
+					<p:commandButton title="Cerrar sesión" icon="ui-icon-power" />
+				</f:facet>
+			</p:menubar>
+		</h:form>
+	</div>
+	<h:panelGrid columns="2">
+		<h:form id="form0">
+			<h:outputText value="Campeonatos" />
+			<p:selectOneMenu value="#{controllerCampeonato.idCampeonatoSeleccionado}">
+					<f:selectItems value="#{controllerCampeonato.lista}" var="a"
+						itemLabel="#{a.campNombre}"
+						itemValue="#{a.campId}"></f:selectItems>
+			</p:selectOneMenu>
+			<p:commandButton value="Cargar" icon="ui-icon-disk"
+						update="@form,:form1,:form1:tabla1"
+						actionListener="#{controllerCampeonato.actionListenerCargarCampeonato()}">
+			</p:commandButton>
+			<p:commandButton value="Editar" icon="ui-icon-pencil" update="@form,:form1,:form3"
+							onclick="PF('dialogo1').show();"
+						actionListener="#{controllerCampeonato.actionListenerCargarCampeonato()}">
+			</p:commandButton>
+			<p:commandButton  value="ENTRAR" icon="ui-icon-open" 
+						action="#{controllerGruposCampeonato.inicializarByIdCampeonato(controllerCampeonato.idCampeonatoSeleccionado)}">
+			</p:commandButton>
+			<p:commandButton value="NUEVO CAMPEONATO" icon="ui-icon-refresh"	update=":form1,:form1:tabla1"
+						actionListener="#{controllerCampeonato.actionListenerNuevoCampeonato()}">
+			</p:commandButton>
+			
+		</h:form>
+	</h:panelGrid>
+	
 	<h:panelGrid columns="2">
 		<h:form id="form1">
 			<p:panel header="MANEJO DE CAMPEONATOS">
 				<p:panelGrid columns="2">
+					<h:outputText value="ID:" />
+					<h:outputText value="#{controllerCampeonato.campeonato.campId}" />
+
 					<h:outputText value="NOMBRE:" />
-					<p:inputText value="#{controllerCampeonato.nombre}" required="true"
+					<p:inputText value="#{controllerCampeonato.campeonato.campNombre}" required="true"
 						requiredMessage="Especifique nombre" />
 					<h:outputText value="DESCRIPCION:" />
-					<p:inputText value="#{controllerCampeonato.descripcion}"
+					<p:inputText value="#{controllerCampeonato.campeonato.campDescripcion}"
 						required="true" requiredMessage="Especifique Descripcion" />
 					<h:outputText value="FECHA:" />
-					<p:calendar value="#{controllerCampeonato.fecha}" required="true"
+					<p:calendar value="#{controllerCampeonato.campeonato.camp_fechaInicio}" required="true"
 						requiredMessage="Especifique Fecha" />
 					<h:outputText value="EQUIPOS PERMITIDOS:" />
-					<p:inputNumber value="#{controllerCampeonato.equiposPermitidos}"
+					<p:inputNumber value="#{controllerCampeonato.campeonato.camp_cantidadEquiposPermitidos}"
 						required="true" requiredMessage="Especifique Cantidad de Equipos" />
-					<p:commandButton value="Agregar" icon="ui-icon-disk"
-						update="@form,:form2:tabla1"
-						actionListener="#{controllerCampeonato.actionListenerAgregar()}">
-					</p:commandButton>
+					
 				</p:panelGrid>
+				<p:panelGrid header="Configuración" columns="2">
+					<p:commandButton value="Guardar Campeonato" icon="ui-icon-disk"
+						update="@form,:form1:tabla1"
+						actionListener="#{controllerCampeonato.actionListenerGuardarCampeonato()}">
+					</p:commandButton>
+					<p:commandButton value="Agregar Equipo" icon="ui-icon-plus"
+						update="@form,:form1:tabla1"
+						actionListener="#{controllerCampeonato.actionListeneragregarEquipo()}">
+					</p:commandButton>
+					<h:outputLabel value="EQUIPO" />
+					<p:inputText value="#{controllerCampeonato.equipo.equ_nombreOficial}"></p:inputText>
+					<h:outputLabel value="PRESIDENTE" />
+					<p:inputText value="#{controllerCampeonato.equipo.equ_nombrePresidente}"></p:inputText>
+				</p:panelGrid>
+				
+				<p:panel header="LISTA DE EQUIPOS">
+					<p:dataTable value="#{controllerCampeonato.campeonato.tblEquipos}" var="b"	id="tabla1">
+						<p:column headerText="ID">
+							<h:outputText value="#{b.equId}" />
+						</p:column>
+						<p:column headerText="NOMBRE OFICIAL">
+							<h:outputText value="#{b.equ_nombreOficial}" />
+						</p:column>
+						<p:column headerText="ENCARGADO - PRESIDENTE">
+							<h:outputText value="#{b.equ_nombrePresidente}" />
+						</p:column>
+						<p:column headerText="OPCIONES">
+							<p:commandButton actionListener="#{controllerCampeonato.actionListenerCargarEquipo(b)}"
+								oncomplete="PF('dialogo2').show()" update=":form3" 
+								title="Editar" icon="ui-icon-pencil">
+							</p:commandButton>
+							<p:commandButton update="@form,:form0,:form1:tabla1"
+								actionListener="#{controllerCampeonato.actionListenerRemoverEquipo(b)}"
+								title="Eliminar" icon="ui-icon-close">
+							</p:commandButton>
+						</p:column>
+					</p:dataTable>
+					
+			</p:panel>
+				
 			</p:panel>
 		</h:form>
 		<br />
-		<h:form id="form2">
-			<p:panel header="LISTA DE CAMPEONATOS">
-				<p:dataTable value="#{controllerCampeonato.lista}" var="a"
-					id="tabla1">
-					<p:column headerText="ID">
-						<h:outputText value="#{a.campId}" />
-					</p:column>
-					<p:column headerText="NOMBRE">
-						<h:outputText value="#{a.campNombre}" />
-					</p:column>
-					<p:column headerText="DESCRIPCION">
-						<h:outputText value="#{a.campDescripcion}" />
-					</p:column>
-					<p:column headerText="FECHA INICIO">
-						<h:outputText value="#{a.camp_fechaInicio}" />
-					</p:column>
-					<p:column headerText="EQUIPOS PERMITIDOS">
-						<h:outputText value="#{a.camp_cantidadEquiposPermitidos}" />
-					</p:column>
-					<p:column headerText="EQUIPOS REGISTRADOS">
-						<h:outputText value="#{a.camp_cantidadEquiposRegistrados}" />
-					</p:column>
-					<p:column headerText="ENTRAR">
-						<p:commandButton icon="ui-icon-open"
-							action="#{controllerEquiposCampeonato.actionEntrarCampeonato(a.campId, a.campNombre)}"></p:commandButton>
-					</p:column>
-					<p:column headerText="ELIMINAR">
-						<p:commandButton icon="ui-icon-close" update="@form"
-							actionListener="#{controllerCampeonato.actionListenerEliminar(a.campId)}"></p:commandButton>
-					</p:column>
-					<p:column headerText="EDITAR">
-						<p:commandButton icon="ui-icon-pencil" update="form4"
-							onclick="PF('dialogo1').show();"
-							actionListener="#{controllerCampeonato.actionListenerCargar(a)}"></p:commandButton>
-					</p:column>
-				</p:dataTable>
-				<p:commandButton value="RESET" icon="ui-icon-refresh"
-					update="tabla1"
-					actionListener="#{controllerCampeonato.actionListenerReset()}"></p:commandButton>
-			</p:panel>
-		</h:form>
+		
 	</h:panelGrid>
 	<p:dialog header="Edición de Campeonato" widgetVar="dialogo1"
 		id="dialogo1" modal="true" height="200">
-		<h:form id="form4">
+		<h:form id="form2">
 			<p:messages autoUpdate="true"></p:messages>
 			<p:panelGrid columns="2">
 				<h:outputText value="NOMBRE" />
-				<h:outputText value="#{controllerCampeonato.nombre}" />
+				<h:outputText value="#{controllerCampeonato.campeonato.campNombre}" />
 				<h:outputText value="DESCRIPCION:" />
-				<p:inputText value="#{controllerCampeonato.descripcion}"
+				<p:inputText value="#{controllerCampeonato.campeonato.campDescripcion}"
 					required="true" />
 				<h:outputText value="FECHA:" />
-				<p:calendar value="#{controllerCampeonato.fecha}" required="true" />
+				<p:calendar value="#{controllerCampeonato.campeonato.camp_fechaInicio}" required="true" />
 				<h:outputText value="EQUIPOS PERMITIDOS:" />
-				<p:inputNumber value="#{controllerCampeonato.equiposPermitidos}"
+				<p:inputNumber value="#{controllerCampeonato.campeonato.camp_cantidadEquiposPermitidos}"
 					required="true" requiredMessage="Especifique Cantidad de Equipos" />
-				<p:commandButton value="Actualizar" update="@form,:form2:tabla1"
-					actionListener="#{controllerCampeonato.actionListenerActualizar()}"></p:commandButton>
+				<p:commandButton value="Actualizar" update="@form,:form1,:form1:tabla1"
+					actionListener="#{controllerCampeonato.actionListenerActualizarCampeonato()}"></p:commandButton>
 			</p:panelGrid>
 		</h:form>
 	</p:dialog>
+	<p:dialog header="Edición de Equipo" widgetVar="dialogo2"
+		id="dialogo2" modal="true" height="200">
+		<h:form id="form3">
+			<p:messages autoUpdate="true"></p:messages>
+			<p:panelGrid columns="2">
+				<h:outputText value="NOMBRE OFICIAL" />
+				<p:inputText value="#{controllerCampeonato.equipo.equ_nombreOficial}" />
+				<h:outputText value="PRESIDENTE" />
+				<p:inputText value="#{controllerCampeonato.equipo.equ_nombrePresidente}" />
+				<p:commandButton value="Guardar" update="@form,:form1,:form1:tabla1"
+					actionListener="#{controllerCampeonato.actionListenerActualizarEquipo()}">
+				</p:commandButton>
+			</p:panelGrid>
+		</h:form>
+	</p:dialog>
+	
+	<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+		<p:commandButton value="Sí" type="button"
+			styleClass="ui-confirmdialog-yes" icon="fa fa-check" />
+		<p:commandButton value="No" type="button"
+			styleClass="ui-confirmdialog-no" icon="fa fa-times" />
+	</p:confirmDialog>
+	
+	
 </body>
 </html>

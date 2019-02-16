@@ -1,5 +1,6 @@
 package campeonato.controller;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
@@ -7,6 +8,8 @@ import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.validation.constraints.Email;
+
 import campeonato.model.entities.*;
 import campeonato.model.manager.CampeonatoManager;
 import campeonato.view.util.JSFUtil;
@@ -14,51 +17,78 @@ import campeonato.view.util.JSFUtil;
 @ManagedBean
 @SessionScoped
 public class ControllerCampeonato {
-	private int id;
-	private Date fecha;
-	private String nombre;
-	private String descripcion;
-	private int equiposPermitidos;
-	private int equiposRegistrados;
+
+
 	private int idCampeonatoSeleccionado;
 	private List<tbl_Campeonato> lista;
+	private tbl_Campeonato Campeonato;
+	private tbl_Equipos Equipo;
+	private String accion;
+	
+	
 	@EJB
 	private CampeonatoManager managerCampeonato;
 
 	@PostConstruct
 	public void inicializar() {
+		
 		lista = managerCampeonato.findAllCampeonatos();
-		fecha = getFechaActual();
-		equiposPermitidos = 32;
+		accion = "crear";
+		
+		Campeonato=new tbl_Campeonato();
+		Campeonato.setCamp_fechaInicio(getFechaActual());
+		Campeonato.setCamp_cantidadEquiposPermitidos(32);
+		Campeonato.setCamp_cantidadEquiposRegistrados(0);
+		Campeonato.setTblEquipos(new ArrayList<tbl_Equipos>());
+		Equipo=new tbl_Equipos();
+		
 	}
 
-	public String actionEntrarCampeonato(int campId)
-	{
-		idCampeonatoSeleccionado=campId;
-		System.out.println("Correcta captura de ID");
-		return "gestionEquiposCampeonato";		
-	}
+
 	
-	public void actionListenerReset() {
-		lista = managerCampeonato.findAllCampeonatos();
+	public void actionListenerNuevoCampeonato() {
+		inicializar();
 	}
 
-	public void actionListenerAgregar() {
+	public void actionListenerGuardarCampeonato() {
 		try {
-			managerCampeonato.agregarCampeonato(nombre, descripcion, fecha, equiposPermitidos);
-			lista = managerCampeonato.findAllCampeonatos();
-			JSFUtil.crearMensajeInfo("Campeonato registrado.");
+			if (Campeonato.getCamp_cantidadEquiposPermitidos() < Campeonato.getCamp_cantidadEquiposRegistrados()) {
+				JSFUtil.crearMensajeInfo("Los equipos Permitidos son menores a los equipos Registrados");
+			}else 
+			{
+				managerCampeonato.guardarCampeonato(Campeonato, accion);
+				lista = managerCampeonato.findAllCampeonatos();
+				JSFUtil.crearMensajeInfo("Campeonato registrado.");
+				inicializar();
+			} 
+
 		} catch (Exception e) {
 			JSFUtil.crearMensajeError(e.getMessage());
 			e.printStackTrace();
 		}
-		nombre = "";
-		descripcion = "";
-		equiposPermitidos = 32;
-		fecha = getFechaActual();
-
+		
 	}
 
+	
+	public void actionListeneragregarEquipo()
+	{
+		try {
+		
+		Campeonato=managerCampeonato.agregarEquipo(Campeonato, Equipo);
+		Equipo=new tbl_Equipos();
+		
+		} catch (Exception e) {
+			JSFUtil.crearMensajeError(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void actionListenerRemoverEquipo(tbl_Equipos obj)
+	{
+		managerCampeonato.removerEquipo(Campeonato, obj);
+	}
+	
 	public void actionListenerEliminar(int id) {
 		try {
 			managerCampeonato.eliminarCampeonato(id);
@@ -70,12 +100,13 @@ public class ControllerCampeonato {
 		}
 	}
 
-	public void actionListenerActualizar() {
+	public void actionListenerActualizarCampeonato() {
 		try {
-			if (equiposPermitidos < equiposRegistrados) {
+			if (Campeonato.getCamp_cantidadEquiposPermitidos() < Campeonato.getCamp_cantidadEquiposRegistrados()) {
 				JSFUtil.crearMensajeInfo("Los equipos Permitidos son menores a los equipos Registrados");
 			} else {
-				managerCampeonato.editarCampeonato(id, nombre, descripcion, fecha, equiposPermitidos);
+				managerCampeonato.editarCampeonato(Campeonato);
+				Campeonato=managerCampeonato.findCampeonato(Campeonato.getCampId());
 				lista = managerCampeonato.findAllCampeonatos();
 				JSFUtil.crearMensajeInfo("Actualización correcta.");
 			}
@@ -85,58 +116,46 @@ public class ControllerCampeonato {
 		}
 	}
 
-	public void actionListenerCargar(tbl_Campeonato objeto) {
-		id = objeto.getCampId();
-		fecha = objeto.getCamp_fechaInicio();
-		nombre = objeto.getCampNombre();
-		descripcion = objeto.getCampDescripcion();
-		equiposRegistrados = objeto.getCamp_cantidadEquiposRegistrados();
+	public void actionListenerCargarCampeonato() {
+		try {
+		Campeonato=managerCampeonato.findCampeonato(idCampeonatoSeleccionado);
+		accion="editar";
+		}catch (Exception e) {
+			JSFUtil.crearMensajeError(e.getMessage());
+			e.printStackTrace();
+		}
+	}
+	
+	
+	public void actionListenerCargarEquipo(tbl_Equipos equipo)
+	{
+		Equipo = equipo;
+	}
+	
+	public void actionListenerActualizarEquipo() 
+	{
+		try 
+		{
+			managerCampeonato.editarEquipo(Equipo);
+		}catch(Exception ex) 
+		{
+			JSFUtil.crearMensajeError(ex.getMessage());
+		}
 	}
 
-	public Date getFechaActual() {
+	public Date getFechaActual() 
+	{
 		GregorianCalendar c = new GregorianCalendar();
 		Date fechaActual = c.getTime();
 		return fechaActual;
 	}
 
-	public int getEquiposPermitidos() {
-		return equiposPermitidos;
+	public int getIdCampeonatoSeleccionado() {
+		return idCampeonatoSeleccionado;
 	}
 
-	public void setEquiposPermitidos(int equiposPermitidos) {
-		this.equiposPermitidos = equiposPermitidos;
-	}
-
-	public int getId() {
-		return id;
-	}
-
-	public void setId(int id) {
-		this.id = id;
-	}
-
-	public Date getFecha() {
-		return fecha;
-	}
-
-	public void setFecha(Date fecha) {
-		this.fecha = fecha;
-	}
-
-	public String getNombre() {
-		return nombre;
-	}
-
-	public void setNombre(String nombre) {
-		this.nombre = nombre;
-	}
-
-	public String getDescripcion() {
-		return descripcion;
-	}
-
-	public void setDescripcion(String descripcion) {
-		this.descripcion = descripcion;
+	public void setIdCampeonatoSeleccionado(int idCampeonatoSeleccionado) {
+		this.idCampeonatoSeleccionado = idCampeonatoSeleccionado;
 	}
 
 	public List<tbl_Campeonato> getLista() {
@@ -147,20 +166,30 @@ public class ControllerCampeonato {
 		this.lista = lista;
 	}
 
-	public int getEquiposRegistrados() {
-		return equiposRegistrados;
+	public tbl_Campeonato getCampeonato() {
+		return Campeonato;
 	}
 
-	public void setEquiposRegistrados(int equiposRegistrados) {
-		this.equiposRegistrados = equiposRegistrados;
+	public void setCampeonato(tbl_Campeonato campeonato) {
+		Campeonato = campeonato;
 	}
 
-	public int getIdCampeonatoSeleccionado() {
-		return idCampeonatoSeleccionado;
+	public tbl_Equipos getEquipo() {
+		return Equipo;
 	}
 
-	public void setIdCampeonatoSeleccionado(int idCampeonatoSeleccionado) {
-		this.idCampeonatoSeleccionado = idCampeonatoSeleccionado;
+	public void setEquipo(tbl_Equipos equipo) {
+		Equipo = equipo;
+	}
+
+
+
+	public String getAccion() {
+		return accion;
+	}
+
+	public void setAccion(String accion) {
+		this.accion = accion;
 	}
 
 }

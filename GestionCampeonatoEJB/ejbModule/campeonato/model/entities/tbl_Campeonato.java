@@ -38,7 +38,7 @@ public class tbl_Campeonato implements Serializable {
 	private String campNombre;
 
 	//bi-directional many-to-one association to tbl_Equipos
-	@OneToMany(mappedBy="tblCampeonato")
+	@OneToMany(mappedBy="tblCampeonato", cascade=CascadeType.ALL)
 	private List<tbl_Equipos> tblEquipos;
 
 	//bi-directional many-to-one association to tbl_Fases
